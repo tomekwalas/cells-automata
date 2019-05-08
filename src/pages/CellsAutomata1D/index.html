@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <link
+      rel="stylesheet"
+      href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+
+    <title>Automaty komórkowe</title>
+  </head>
+  <body>
+    <main>
+      <section id="form-data">
+        <h1>Data</h1>
+        <label>
+          Rule
+          <input id="rule" value="90" />
+        </label>
+        <label>
+          Width
+          <input id="width" value="16" />
+        </label>
+        <label>
+          Height
+          <input id="height" value="16" />
+        </label>
+        <button id="generate">Generate</button>
+      </section>
+      <section id="result">
+        <h3 style="visibility: hidden" id="loader">Generating...</h3>
+        <div id="grid"></div>
+      </section>
+    </main>
+
+    <script src="./main.js"></script>
+  </body>
+</html>

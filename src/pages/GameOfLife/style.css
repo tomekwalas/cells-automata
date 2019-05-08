@@ -1,0 +1,32 @@
+.cell {
+  width: 20px;
+  height: 20px;
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.selected {
+  background-color: black;
+}
+
+#container {
+  display: flex;
+  justify-content: center;
+}
+
+#nav {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  background-color: white;
+  padding: 20px;
+  top: 0;
+}
+#start {
+  width: 100px;
+}
+#game {
+  margin-top: 60px;
+  width: fit-content;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+}

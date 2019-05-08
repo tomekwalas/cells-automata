@@ -1,0 +1,20 @@
+{
+  "name": "cells-automata",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "test": "jest --watchAll"
+  },
+  "dependencies": {
+    "game": "^1.0.3",
+    "parcel-bundler": "^1.12.3"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.4.4",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "jest": "^24.7.1"
+  }
+}

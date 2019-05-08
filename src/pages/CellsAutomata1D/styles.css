@@ -1,0 +1,13 @@
+#result {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.selected {
+  background-color: black;
+}
+
+.cell {
+  width: 10px;
+  height: 10px;
+}
