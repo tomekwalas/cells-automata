@@ -1,22 +1,25 @@
-import homogeneus from './Nucleation/homogeneus';
-import random from './Nucleation/random';
-import withRadius from './Nucleation/withRadius';
-import vonNeumann from './Growth/vonNeumann';
+import base from "./Growth/base";
+import homogeneus from "./Nucleation/homogeneus";
+import random from "./Nucleation/random";
+import withRadius from "./Nucleation/withRadius";
 
 export const EDGE_CASE = {
-  absorb: 'absorb',
-  periodic: 'periodic'
+  absorb: "absorb",
+  periodic: "periodic"
 };
 
 export const TYPES = {
-  homogeneus: 'homogeneus',
-  random: 'random',
-  withRadius: 'withRadius'
+  homogeneus: "homogeneus",
+  random: "random",
+  withRadius: "with radius"
 };
 
 export const GROWTH = {
-  VON_NEUMANN: 'von_neuman',
-  MOORE: 'moore'
+  von_neumann: "von neuman",
+  moore: "moore",
+  pentagonal: "pentagonal",
+  hexagonal: "hexagonal",
+  withRadius: "withRadius"
 };
 
 export function nucleate(mesh, type, data) {
@@ -31,8 +34,5 @@ export function nucleate(mesh, type, data) {
 }
 
 export function grow(mesh, type, edge) {
-  switch (type) {
-    case GROWTH.VON_NEUMANN:
-      return vonNeumann(mesh, edge);
-  }
+  return base(mesh, edge, type);
 }

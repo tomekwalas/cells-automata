@@ -14,8 +14,8 @@
     <title>Automaty komórkowe</title>
   </head>
   <body>
-    <div id="nav">
-      <div id="config">
+    <main>
+      <nav class="navbar">
         <label for="width">Width</label>
         <input name="width" id="width" value="20" />
         <label for="height">Height</label>
@@ -26,16 +26,22 @@
         <input name="grainsHeight" id="grainsHeight" value="5" />
         <label for="grainsWidth">Grain per width</label>
         <input name="grainsWidth" id="grainsWidth" value="5" />
+        <label for="radius">Radius</label>
+        <input name="radius" id="radius" value="2" />
+        <label>Nucleation type</label>
         <select id="type"></select>
-      </div>
-      <div>
+        <label>Growth type</label>
+        <select id="growth"></select>
+        <label>Border condition</label>
+        <select id="edge"></select>
+        <button id="nucleate">Nucleate</button>
         <button id="start">Start</button>
         <button id="next">Next</button>
+      </nav>
+      <div id="container">
+        <div id="game"></div>
       </div>
-    </div>
-    <div id="container">
-      <div id="game"></div>
-    </div>
+    </main>
 
     <script src="./main.js"></script>
   </body>

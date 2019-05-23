@@ -1,28 +1,41 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
 .cell {
-  width: 20px;
-  height: 20px;
+  width: 10px;
+  height: 10px;
   border-top: 1px solid black;
   border-right: 1px solid black;
 }
 
+main {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+}
 #container {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
-#nav {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  background-color: white;
-  padding: 20px;
-  top: 0;
-}
-#start {
-  width: 100px;
-}
 #game {
   margin-top: 60px;
   width: fit-content;
   border-bottom: 1px solid black;
   border-left: 1px solid black;
+}
+
+.navbar {
+  background-color: cornflowerblue;
+  display: grid;
+  grid-template-columns: 1r;
+  justify-items: center;
+  padding: 20px;
+}
+
+button,
+select {
+  width: 100%;
 }

@@ -1,6 +1,6 @@
-import { nucleate, TYPES, inRadius } from "../grainGrowth";
+import { nucleate, TYPES } from "../grainGrowth";
 
-describe("Grain growth tests", () => {
+describe("Nucleate tests", () => {
   it("should nucleate as homogeneus", () => {
     const mesh = [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]];
 
@@ -43,17 +43,22 @@ describe("Grain growth tests", () => {
     const mesh = [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]];
 
     const data = {
-      grainCount: 4,
-      radius: 2
+      grainCount: 4
     };
 
     const nextMesh = nucleate(mesh, TYPES.random, data);
 
-    const actual = nextMesh
-      .flat()
-      .reduce((prev, curr) => (curr !== 0 ? prev + 1 : prev), 0);
+    let grains = 0;
 
-    expect(actual).toBe(4);
+    nextMesh.forEach(cells =>
+      cells.forEach(c => {
+        if (c !== 0) {
+          grains++;
+        }
+      })
+    );
+
+    expect(grains).toBe(4);
   });
 
   it("should nucleate as random with radius", () => {
@@ -61,15 +66,21 @@ describe("Grain growth tests", () => {
 
     const data = {
       grainCount: 3,
-      radius: 2
+      radius: 3
     };
 
     const nextMesh = nucleate(mesh, TYPES.withRadius, data);
 
-    const actual = nextMesh
-      .flat()
-      .reduce((prev, curr) => (curr !== 0 ? prev + 1 : prev), 0);
+    let grains = 0;
 
-    expect(actual === 2 || actual === 1).toBeTruthy();
+    nextMesh.forEach(cells =>
+      cells.forEach(c => {
+        if (c !== 0) {
+          grains++;
+        }
+      })
+    );
+
+    expect(grains === 2 || grains === 1).toBeTruthy();
   });
 });

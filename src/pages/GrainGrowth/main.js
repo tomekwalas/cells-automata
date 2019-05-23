@@ -1,27 +1,28 @@
-import { nucleate, TYPES } from './grainGrowth';
-import { createCell } from './Cell';
+import { createCell } from "./Cell";
+import { EDGE_CASE, grow, GROWTH, nucleate, TYPES } from "./grainGrowth";
 let mesh = null;
 function onCellClick(cell) {
   return function() {
-    const x = cell.getAttribute('x');
-    const y = cell.getAttribute('y');
+    const x = cell.getAttribute("x");
+    const y = cell.getAttribute("y");
     mesh[y][x] = mesh[y][x] !== 0 ? 0 : createCell(x * y);
 
     paint();
   };
 }
 function paint() {
-  const container = document.getElementById('game');
+  const container = document.getElementById("game");
   container.innerHTML = null;
   const meshElements = mesh.map((cells, y) =>
     cells.map((cell, x) => {
-      const cellElement = document.createElement('div');
-      cellElement.setAttribute('x', x);
-      cellElement.setAttribute('y', y);
+      const cellElement = document.createElement("div");
+      cellElement.setAttribute("x", x);
+      cellElement.setAttribute("y", y);
       cellElement.onclick = onCellClick(cellElement);
 
-      cellElement.className = !!cell ? 'cell selected' : 'cell';
+      cellElement.className = "cell";
       cellElement.style.backgroundColor = cell ? cell.color : undefined;
+      cellElement.style.border = undefined;
 
       return cellElement;
     })
@@ -34,13 +35,13 @@ function paint() {
 }
 
 function generateBoard() {
-  const container = document.getElementById('game');
+  const container = document.getElementById("game");
 
-  const width = parseInt(document.getElementById('width').value, 10);
-  const height = parseInt(document.getElementById('height').value, 10);
+  const width = parseInt(document.getElementById("width").value, 10);
+  const height = parseInt(document.getElementById("height").value, 10);
 
-  container.style['display'] = 'grid';
-  container.style['gridTemplateColumns'] = `repeat(${width}, 20px)`;
+  container.style["display"] = "grid";
+  container.style["gridTemplateColumns"] = `repeat(${width}, 10px)`;
 
   mesh = [...Array(height).keys()].map(() =>
     [...Array(width).keys()].map(() => 0)
@@ -48,42 +49,107 @@ function generateBoard() {
 
   paint();
 }
-let selected = TYPES.homogeneus;
+
+function sleep(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
+
+function stop() {
+  played = false;
+  document.getElementById("start").innerText = "Play";
+  document.getElementById("start").onclick = start;
+}
+function start() {
+  played = true;
+  document.getElementById("start").innerText = "Pause";
+  document.getElementById("start").onclick = stop;
+
+  play();
+}
+
+function play() {
+  if (!played) {
+    return;
+  }
+  next();
+  sleep(200).then(play);
+}
+
+function next() {
+  mesh = grow(mesh, selectedGrowthType, selectedBorderType);
+
+  paint();
+}
+
+let selectedNucleationType = TYPES.homogeneus;
+let selectedGrowthType = GROWTH.von_neumann;
+let selectedBorderType = EDGE_CASE.absorb;
+let played = true;
 
 window.onload = generateBoard;
-document.getElementById('width').onchange = generateBoard;
-document.getElementById('height').onchange = generateBoard;
-document.getElementById('start').onclick = function() {
+document.getElementById("width").onchange = generateBoard;
+document.getElementById("height").onchange = generateBoard;
+document.getElementById("next").onclick = next;
+
+document.getElementById("nucleate").onclick = function() {
   mesh = [...mesh.map(cells => cells.map(() => 0))];
-  const grains = document.getElementById('grains').value;
+  const radius = parseInt(document.getElementById("radius").value, 10);
+  const grainCount = parseInt(document.getElementById("grains").value, 10);
   const grainPerHeight = parseInt(
-    document.getElementById('grainsHeight').value,
+    document.getElementById("grainsHeight").value,
     10
   );
   const grainPerWidth = parseInt(
-    document.getElementById('grainsWidth').value,
+    document.getElementById("grainsWidth").value,
     10
   );
   const data = {
-    grainCount: parseInt(grains, 10),
-    radius: 2,
+    grainCount,
+    radius,
     grainPerHeight,
     grainPerWidth
   };
-  mesh = nucleate(mesh, selected, data);
+  mesh = nucleate(mesh, selectedNucleationType, data);
 
   paint();
 };
+document.getElementById("start").onclick = start;
 
-Object.keys(TYPES).forEach(type => {
-  const container = document.getElementById('type');
-  const nucleateOption = document.createElement('option');
-  nucleateOption.setAttribute('value', type);
+Object.values(TYPES).forEach(type => {
+  const container = document.getElementById("type");
+  const nucleateOption = document.createElement("option");
+  nucleateOption.setAttribute("value", type);
   nucleateOption.innerText = type;
   container.appendChild(nucleateOption);
 });
 
-document.getElementById('type').value = selected;
-document.getElementById('type').onchange = e => {
-  selected = e.target.value;
+document.getElementById("type").value = selectedNucleationType;
+document.getElementById("type").onchange = e => {
+  selectedNucleationType = e.target.value;
+};
+
+Object.values(GROWTH).forEach(growth => {
+  const container = document.getElementById("growth");
+  const growthOption = document.createElement("option");
+  growthOption.setAttribute("value", growth);
+  growthOption.innerText = growth;
+  container.appendChild(growthOption);
+});
+
+document.getElementById("growth").value = selectedGrowthType;
+document.getElementById("growth").onchange = e => {
+  selectedGrowthType = e.target.value;
+};
+
+Object.values(EDGE_CASE).forEach(edge => {
+  const container = document.getElementById("edge");
+  const edgeOption = document.createElement("option");
+  edgeOption.setAttribute("value", edge);
+  edgeOption.innerText = edge;
+  container.appendChild(edgeOption);
+});
+
+document.getElementById("edge").value = selectedBorderType;
+document.getElementById("edge").onchange = e => {
+  selectedBorderType = e.target.value;
 };

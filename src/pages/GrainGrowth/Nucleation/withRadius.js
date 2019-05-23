@@ -1,5 +1,5 @@
-import { createCell } from '../Cell';
-import { randomNumber } from '../../../utils';
+import { randomNumber } from "../../../utils";
+import { createCell } from "../Cell";
 
 export default function withRadius(mesh, data) {
   const { grainCount, radius } = data;
@@ -45,11 +45,18 @@ function inRadius(mesh, x, y, radius) {
 
   for (let i = startX; i < stopX; i++) {
     for (let j = startY; j < stopY; j++) {
-      if (mesh[i][j] !== 0) {
+      if (mesh[i][j] !== 0 && isPointInRadius(i, j, x, y, radius)) {
         return true;
       }
     }
   }
 
   return false;
+}
+
+function isPointInRadius(x, y, centerX, centerY, radius) {
+  const isInRadius =
+    Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2) <= Math.pow(radius, 2);
+
+  return isInRadius;
 }
