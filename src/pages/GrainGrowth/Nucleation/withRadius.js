@@ -21,7 +21,7 @@ export default function withRadius(mesh, data) {
         nextMesh[randomHeight][randomWidth] === 0 &&
         !inRadius(nextMesh, randomHeight, randomWidth, radius)
       ) {
-        const cell = createCell(id++);
+        const cell = createCell({ id: id++, x: randomHeight, y: randomWidth });
 
         nextMesh[randomHeight][randomWidth] = cell;
         break;

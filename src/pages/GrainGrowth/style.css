@@ -27,15 +27,16 @@ main {
   border-left: 1px solid black;
 }
 
-.navbar {
-  background-color: cornflowerblue;
-  display: grid;
-  grid-template-columns: 1r;
-  justify-items: center;
+.customNavbar {
+  background-color: #efefef;
   padding: 20px;
 }
 
-button,
 select {
   width: 100%;
+}
+
+button {
+  width: 100%;
+  margin-top: 5px;
 }

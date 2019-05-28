@@ -1,4 +1,4 @@
-import { createCell } from '../Cell';
+import { createCell } from "../Cell";
 
 export default function homogeneus(mesh, data) {
   const { grainPerWidth, grainPerHeight, color } = data;
@@ -13,7 +13,7 @@ export default function homogeneus(mesh, data) {
   let id = 1;
   for (let i = 0; i < height; i = i + heightLeap) {
     for (let j = 0; j < width; j = j + widthtLeap) {
-      const cell = createCell(id++, color);
+      const cell = createCell({ id: id++, color, x: i, y: j });
       nextMesh[i][j] = cell;
     }
   }

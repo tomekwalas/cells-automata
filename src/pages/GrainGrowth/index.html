@@ -9,34 +9,84 @@
       rel="stylesheet"
       href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic"
     />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
     <link rel="stylesheet" href="./style.css" />
 
     <title>Automaty komórkowe</title>
   </head>
   <body>
     <main>
-      <nav class="navbar">
-        <label for="width">Width</label>
-        <input name="width" id="width" value="20" />
-        <label for="height">Height</label>
-        <input name="height" id="height" value="20" />
-        <label for="grains">Grains</label>
-        <input name="grains" id="grains" value="5" />
-        <label for="grainsHeight">Grains per height</label>
-        <input name="grainsHeight" id="grainsHeight" value="5" />
-        <label for="grainsWidth">Grain per width</label>
-        <input name="grainsWidth" id="grainsWidth" value="5" />
-        <label for="radius">Radius</label>
-        <input name="radius" id="radius" value="2" />
-        <label>Nucleation type</label>
-        <select id="type"></select>
-        <label>Growth type</label>
-        <select id="growth"></select>
-        <label>Border condition</label>
-        <select id="edge"></select>
-        <button id="nucleate">Nucleate</button>
-        <button id="start">Start</button>
-        <button id="next">Next</button>
+      <nav class="customNavbar">
+        <div class="form-group">
+          <label for="width">Width</label>
+          <input class="form-control" name="width" id="width" value="20" />
+        </div>
+        <div class="form-group">
+          <label for="height">Height</label>
+          <input class="form-control" name="height" id="height" value="20" />
+        </div>
+        <div class="form-group">
+          <label for="grains">Grains</label>
+          <input class="form-control" name="grains" id="grains" value="5" />
+        </div>
+        <div class="form-group">
+          <label for="grainsHeight">Grains per height</label>
+          <input
+            class="form-control"
+            name="grainsHeight"
+            id="grainsHeight"
+            value="5"
+          />
+        </div>
+        <div class="form-group">
+          <label for="grainsWidth">Grain per width</label>
+          <input
+            class="form-control"
+            name="grainsWidth"
+            id="grainsWidth"
+            value="5"
+          />
+        </div>
+        <div class="form-group">
+          <label for="radius">Radius</label>
+          <input class="form-control" name="radius" id="radius" value="2" />
+        </div>
+        <div class="form-group">
+          <label for="type">Nucleation type</label>
+          <select class="form-control" id="type"></select>
+        </div>
+        <div class="form-group">
+          <label for="growth">Growth type</label>
+          <select class="form-control" id="growth"></select>
+        </div>
+        <div class="form-group">
+          <label for="edge">Border condition</label>
+          <select class="form-control" id="edge"></select>
+        </div>
+        <button id="nucleate" class="btn btn-dark">Nucleate</button>
+        <button id="start" class="btn btn-dark">Grow</button>
+        <button id="next" class="btn btn-dark">Next</button>
+        <button id="mc" class="btn btn-dark">Energy</button>
       </nav>
       <div id="container">
         <div id="game"></div>

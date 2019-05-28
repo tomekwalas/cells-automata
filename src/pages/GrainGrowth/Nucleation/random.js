@@ -1,5 +1,5 @@
-import { createCell } from '../Cell';
-import { randomNumber } from '../../../utils';
+import { randomNumber } from "../../../utils";
+import { createCell } from "../Cell";
 
 export default function random(mesh, data) {
   const { grainCount } = data;
@@ -17,7 +17,7 @@ export default function random(mesh, data) {
       const randomWidth = randomNumber(0, width);
 
       if (nextMesh[randomHeight][randomWidth] === 0) {
-        const cell = createCell(id++);
+        const cell = createCell({ id: id++, x: randomHeight, y: randomWidth });
         nextMesh[randomHeight][randomWidth] = cell;
         break;
       }

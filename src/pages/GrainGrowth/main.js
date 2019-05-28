@@ -1,11 +1,12 @@
 import { createCell } from "./Cell";
+import { getEnergyMesh } from "./Energy";
 import { EDGE_CASE, grow, GROWTH, nucleate, TYPES } from "./grainGrowth";
 let mesh = null;
 function onCellClick(cell) {
   return function() {
     const x = cell.getAttribute("x");
     const y = cell.getAttribute("y");
-    mesh[y][x] = mesh[y][x] !== 0 ? 0 : createCell(x * y);
+    mesh[y][x] = mesh[y][x] !== 0 ? 0 : createCell({ id: x * y, x, y });
 
     paint();
   };
@@ -21,8 +22,13 @@ function paint() {
       cellElement.onclick = onCellClick(cellElement);
 
       cellElement.className = "cell";
-      cellElement.style.backgroundColor = cell ? cell.color : undefined;
-      cellElement.style.border = undefined;
+      if (showEnergy) {
+        cellElement.style.backgroundColor = cell
+          ? `rgba(255,0,0, 0.${cell.energy})`
+          : undefined;
+      } else {
+        cellElement.style.backgroundColor = cell ? cell.color : undefined;
+      }
 
       return cellElement;
     })
@@ -56,12 +62,12 @@ function sleep(time) {
 
 function stop() {
   played = false;
-  document.getElementById("start").innerText = "Play";
+  document.getElementById("start").innerText = "Grow";
   document.getElementById("start").onclick = start;
 }
 function start() {
   played = true;
-  document.getElementById("start").innerText = "Pause";
+  document.getElementById("start").innerText = "Stop";
   document.getElementById("start").onclick = stop;
 
   play();
@@ -76,8 +82,21 @@ function play() {
 }
 
 function next() {
-  mesh = grow(mesh, selectedGrowthType, selectedBorderType);
+  const radius = parseInt(document.getElementById("radius").value, 10);
+  mesh = grow(mesh, selectedGrowthType, selectedBorderType, { radius });
 
+  paint();
+}
+
+function mc() {
+  if (showEnergy) {
+    showEnergy = !showEnergy;
+    paint();
+    return;
+  }
+
+  mesh = getEnergyMesh(mesh, selectedGrowthType);
+  showEnergy = !showEnergy;
   paint();
 }
 
@@ -85,11 +104,13 @@ let selectedNucleationType = TYPES.homogeneus;
 let selectedGrowthType = GROWTH.von_neumann;
 let selectedBorderType = EDGE_CASE.absorb;
 let played = true;
+let showEnergy = false;
 
 window.onload = generateBoard;
 document.getElementById("width").onchange = generateBoard;
 document.getElementById("height").onchange = generateBoard;
 document.getElementById("next").onclick = next;
+document.getElementById("mc").onclick = mc;
 
 document.getElementById("nucleate").onclick = function() {
   mesh = [...mesh.map(cells => cells.map(() => 0))];
