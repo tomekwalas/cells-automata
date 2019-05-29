@@ -11,9 +11,29 @@ function onCellClick(cell) {
     paint();
   };
 }
+
+function getMaxEnergy() {
+  let maxEnergy = 0;
+
+  mesh.forEach(cells =>
+    cells.forEach(cell => {
+      if (cell.energy > maxEnergy) {
+        maxEnergy = cell.energy;
+      }
+    })
+  );
+
+  return parseFloat(maxEnergy);
+}
+
+function round(number) {
+  return Math.round(number * 100) / 100;
+}
 function paint() {
   const container = document.getElementById("game");
   container.innerHTML = null;
+
+  const maxEnergy = getMaxEnergy();
   const meshElements = mesh.map((cells, y) =>
     cells.map((cell, x) => {
       const cellElement = document.createElement("div");
@@ -23,8 +43,9 @@ function paint() {
 
       cellElement.className = "cell";
       if (showEnergy) {
+        const energy = round(parseFloat(cell.energy) / maxEnergy);
         cellElement.style.backgroundColor = cell
-          ? `rgba(255,0,0, 0.${cell.energy})`
+          ? `rgba(255,0,0, ${energy})`
           : undefined;
       } else {
         cellElement.style.backgroundColor = cell ? cell.color : undefined;
@@ -88,16 +109,26 @@ function next() {
   paint();
 }
 
+function playEnergy() {
+  if (!showEnergy) {
+    return;
+  }
+  mesh = getEnergyMesh(mesh, selectedGrowthType);
+  paint();
+
+  sleep(200).then(playEnergy);
+}
+
 function mc() {
   if (showEnergy) {
     showEnergy = !showEnergy;
+    document.getElementById("mc").innerText = "Start Energy";
     paint();
     return;
   }
-
-  mesh = getEnergyMesh(mesh, selectedGrowthType);
+  document.getElementById("mc").innerText = "Stop Energy";
   showEnergy = !showEnergy;
-  paint();
+  playEnergy();
 }
 
 let selectedNucleationType = TYPES.homogeneus;

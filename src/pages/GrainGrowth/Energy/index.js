@@ -1,3 +1,4 @@
+import { randomNumber } from "../../../utils";
 import { EDGE_CASE } from "../grainGrowth";
 import { getMainCellAndNeibours } from "../Growth/base";
 
@@ -32,7 +33,9 @@ export function getEnergyMesh(mesh, type, data) {
         continue;
       }
 
-      const newCell = foreignNeibours[0];
+      const randomIndex = randomNumber(0, foreignNeibours.length);
+
+      const newCell = foreignNeibours[randomIndex];
       const newForeignNeibours = neibours.filter(c => c.id !== newCell.id);
 
       const energyAfter = newForeignNeibours.length;
