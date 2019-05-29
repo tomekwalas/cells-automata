@@ -113,7 +113,8 @@ function playEnergy() {
   if (!showEnergy) {
     return;
   }
-  mesh = getEnergyMesh(mesh, selectedGrowthType);
+  const radius = parseInt(document.getElementById("radius").value, 10);
+  mesh = getEnergyMesh(mesh, selectedGrowthType, { radius });
   paint();
 
   sleep(200).then(playEnergy);
@@ -159,7 +160,8 @@ document.getElementById("nucleate").onclick = function() {
     grainCount,
     radius,
     grainPerHeight,
-    grainPerWidth
+    grainPerWidth,
+    edge: selectedBorderType
   };
   mesh = nucleate(mesh, selectedNucleationType, data);
 

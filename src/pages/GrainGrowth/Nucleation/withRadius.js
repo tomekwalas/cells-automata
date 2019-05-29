@@ -1,8 +1,9 @@
 import { randomNumber } from "../../../utils";
 import { createCell } from "../Cell";
+import { EDGE_CASE } from "../grainGrowth";
 
 export default function withRadius(mesh, data) {
-  const { grainCount, radius } = data;
+  const { grainCount, radius, edge } = data;
 
   const width = mesh[0].length;
   const height = mesh.length;
@@ -19,7 +20,7 @@ export default function withRadius(mesh, data) {
 
       if (
         nextMesh[randomHeight][randomWidth] === 0 &&
-        !inRadius(nextMesh, randomHeight, randomWidth, radius)
+        !inRadius(nextMesh, randomHeight, randomWidth, radius, edge)
       ) {
         const cell = createCell({ id: id++, x: randomHeight, y: randomWidth });
 
@@ -33,20 +34,55 @@ export default function withRadius(mesh, data) {
   return nextMesh;
 }
 
-function inRadius(mesh, x, y, radius) {
+function inRadius(mesh, x, y, radius, edge) {
   const width = mesh[0].length;
   const height = mesh.length;
+  if (edge === EDGE_CASE.absorb) {
+    const startX = x - radius < 0 ? 0 : x - radius;
+    const startY = y - radius < 0 ? 0 : y - radius;
 
-  const startX = x - radius < 0 ? 0 : x - radius;
-  const startY = y - radius < 0 ? 0 : y - radius;
+    const stopX = x + radius + 1 > height ? height : x + radius + 1;
+    const stopY = y + radius + 1 > width ? width : y + radius + 1;
 
-  const stopX = x + radius + 1 > height ? height : x + radius + 1;
-  const stopY = y + radius + 1 > width ? width : y + radius + 1;
+    for (let i = startX; i < stopX; i++) {
+      for (let j = startY; j < stopY; j++) {
+        const cell = mesh[i][j];
+        if (cell !== 0 && isPointInRadius(i, j, x, y, radius)) {
+          return true;
+        }
+      }
+    }
+  } else {
+    const startX = x - radius;
+    const startY = y - radius;
 
-  for (let i = startX; i < stopX; i++) {
-    for (let j = startY; j < stopY; j++) {
-      if (mesh[i][j] !== 0 && isPointInRadius(i, j, x, y, radius)) {
-        return true;
+    const stopX = x + radius;
+    const stopY = y + radius;
+
+    for (let i = startX; i <= stopX; i = i + 1) {
+      for (let j = startY; j <= stopY; j = j + 1) {
+        let cellX = i,
+          cellY = j;
+
+        if (i < 0) {
+          cellX = (i + height) % height;
+        }
+
+        if (j < 0) {
+          cellY = (j + width) % width;
+        }
+
+        if (i >= height) {
+          cellX = i % height;
+        }
+        if (j >= width) {
+          cellY = j % width;
+        }
+
+        const cell = mesh[cellX][cellY];
+        if (cell !== 0 && isPointInRadius(i, j, x, y, radius)) {
+          return true;
+        }
       }
     }
   }

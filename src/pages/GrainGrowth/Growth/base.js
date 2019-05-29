@@ -268,15 +268,33 @@ function inRadiusNeibours(mesh, x, y, radius) {
       }
     }
   } else {
-    const startX = (x - radius + height) % height;
-    const startY = (y - radius + width) % width;
+    const startX = x - radius;
+    const startY = y - radius;
 
-    const stopX = (x + radius + 1) % height;
-    const stopY = (y + radius + 1) % width;
+    const stopX = x + radius;
+    const stopY = y + radius;
 
-    for (let i = startX; i !== stopX; i = (i + 1) % height) {
-      for (let j = startY; j !== stopY; j = (j + 1) % width) {
-        const cell = mesh[i][j];
+    for (let i = startX; i <= stopX; i = i + 1) {
+      for (let j = startY; j <= stopY; j = j + 1) {
+        let cellX = i,
+          cellY = j;
+
+        if (i < 0) {
+          cellX = (i + height) % height;
+        }
+
+        if (j < 0) {
+          cellY = (j + width) % width;
+        }
+
+        if (i >= height) {
+          cellX = i % height;
+        }
+        if (j >= width) {
+          cellY = j % width;
+        }
+
+        const cell = mesh[cellX][cellY];
         if (cell !== 0 && isPointInRadius(i, j, x, y, radius)) {
           neibours.push(cell);
         }
