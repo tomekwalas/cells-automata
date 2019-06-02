@@ -39,11 +39,11 @@
       <nav class="customNavbar">
         <div class="form-group">
           <label for="width">Width</label>
-          <input class="form-control" name="width" id="width" value="20" />
+          <input class="form-control" name="width" id="width" value="50" />
         </div>
         <div class="form-group">
           <label for="height">Height</label>
-          <input class="form-control" name="height" id="height" value="20" />
+          <input class="form-control" name="height" id="height" value="50" />
         </div>
         <div class="form-group">
           <label for="grains">Grains</label>
@@ -72,6 +72,15 @@
           <input class="form-control" name="radius" id="radius" value="2" />
         </div>
         <div class="form-group">
+          <label for="energyIterations">Energy iterations</label>
+          <input
+            class="form-control"
+            name="energyIterations"
+            id="energyIterations"
+            value="2"
+          />
+        </div>
+        <div class="form-group">
           <label for="type">Nucleation type</label>
           <select class="form-control" id="type"></select>
         </div>
@@ -86,7 +95,8 @@
         <button id="nucleate" class="btn btn-dark">Nucleate</button>
         <button id="start" class="btn btn-dark">Grow</button>
         <button id="next" class="btn btn-dark">Next</button>
-        <button id="mc" class="btn btn-dark">Energy</button>
+        <button id="mcPlay" class="btn btn-dark">Energy</button>
+        <button id="mc" class="btn btn-dark">Show Energy</button>
       </nav>
       <div id="container">
         <div id="game"></div>
