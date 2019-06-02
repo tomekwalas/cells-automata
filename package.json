@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "parcel src/index.html",
-    "test": "jest --watchAll"
+    "test": "jest --watch",
+    "test:debug": "node --inspect-brk node_modules/jest/bin/jest.js --watch --runInBand"
   },
   "dependencies": {
     "game": "^1.0.3",
