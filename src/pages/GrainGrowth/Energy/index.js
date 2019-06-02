@@ -1,6 +1,6 @@
-import { randomNumber } from '../../../utils';
-import { EDGE_CASE } from '../grainGrowth';
-import { getMainCellAndNeibours } from '../Growth/base';
+import { randomNumber } from "../../../utils";
+import { EDGE_CASE } from "../grainGrowth";
+import { getMainCellAndNeibours } from "../Growth/base";
 
 function clone(arr) {
   return [...arr.map(subarr => [...subarr])];
@@ -30,6 +30,12 @@ export function getEnergyMesh(mesh, type, data) {
       const energyBefore = foreignNeibours.length;
 
       if (energyBefore === 0) {
+        newMesh[parseInt(cell.x, 10)][parseInt(cell.y, 10)] = {
+          ...cell,
+          x: parseInt(cell.x, 10),
+          y: parseInt(cell.y, 10),
+          energy: energyBefore
+        };
         continue;
       }
 
@@ -40,30 +46,32 @@ export function getEnergyMesh(mesh, type, data) {
 
       const energyAfter = newForeignNeibours.length;
       const delta = energyAfter - energyBefore;
-
-      let shouldChange = false;
-
-      const kt = 1;
       let probability;
-      if (delta <= 0) {
-        probability = 100;
-      } else {
+      const kt = 1;
+      if (delta > 0) {
         probability = Math.round(Math.exp(-delta / kt) * 100);
+      } else {
+        probability = 100;
       }
 
-      if (probability === 100) {
-        shouldChange = true;
-      } else {
-        shouldChange = randomNumber(0, 100) < probability;
-      }
+      const shouldChange =
+        probability < 100 ? randomNumber(0, 100) < probability : true;
 
       if (shouldChange) {
         newMesh[parseInt(cell.x, 10)][parseInt(cell.y, 10)] = {
           ...cell,
           id: newCell.id,
+          color: newCell.color,
           x: parseInt(cell.x, 10),
           y: parseInt(cell.y, 10),
           energy: energyAfter
+        };
+      } else {
+        newMesh[parseInt(cell.x, 10)][parseInt(cell.y, 10)] = {
+          ...cell,
+          x: parseInt(cell.x, 10),
+          y: parseInt(cell.y, 10),
+          energy: energyBefore
         };
       }
     }
