@@ -1,6 +1,6 @@
-import { randomNumber } from '../../utils';
+import { randomNumber } from "../../utils";
 
-export const createCell = ({ id, color, x, y }) => {
+export const createCell = ({ id, color, x, y, recrystalized }) => {
   const r = randomNumber(0, 255);
   const g = randomNumber(0, 255);
   const b = randomNumber(0, 255);
@@ -11,7 +11,7 @@ export const createCell = ({ id, color, x, y }) => {
     x,
     y,
     energy: 0,
-    recrystalized: false,
+    recrystalized,
     dislocationDensity: 0
   };
 };

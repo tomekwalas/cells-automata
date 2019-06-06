@@ -1,6 +1,7 @@
 import { createCell } from "./Cell";
 import { getEnergyMesh } from "./Energy";
 import { EDGE_CASE, grow, GROWTH, nucleate, TYPES } from "./grainGrowth";
+import { dislocationGun } from "./Recrystalization";
 let mesh = null;
 function onCellClick(cell) {
   return function() {
@@ -26,14 +27,30 @@ function getMaxEnergy() {
   return parseFloat(maxEnergy);
 }
 
+function getMaxDensity() {
+  let maxDensity = 0;
+
+  mesh.forEach(cells =>
+    cells.forEach(cell => {
+      if (cell.dislocationDensity > maxDensity) {
+        maxDensity = cell.dislocationDensity;
+      }
+    })
+  );
+
+  return parseFloat(maxDensity);
+}
+
 function round(number) {
   return Math.round(number * 100) / 100;
 }
+
 function paint() {
   const container = document.getElementById("game");
   container.innerHTML = null;
 
   const maxEnergy = getMaxEnergy();
+  const maxDensity = getMaxDensity();
   const meshElements = mesh.map((cells, y) =>
     cells.map((cell, x) => {
       const cellElement = document.createElement("div");
@@ -46,6 +63,11 @@ function paint() {
         const energy = round(parseFloat(cell.energy) / maxEnergy);
         cellElement.style.backgroundColor = cell
           ? `rgba(255,0,0, ${energy})`
+          : undefined;
+      } else if (showDensity) {
+        const density = round(parseFloat(cell.dislocationDensity) / maxDensity);
+        cellElement.style.backgroundColor = cell
+          ? `rgba(0,0,255, ${density})`
           : undefined;
       } else {
         cellElement.style.backgroundColor = cell ? cell.color : undefined;
@@ -137,18 +159,34 @@ function mc() {
   showEnergy = !showEnergy;
   paint();
 }
+let timestamp = 0;
+const TIMESTAMP = 0.01;
+
+function getDislocation() {
+  const TIME = 2;
+  mesh = dislocationGun({ mesh, timestamp });
+  timestamp += TIMESTAMP;
+  paint();
+}
 
 let selectedNucleationType = TYPES.withRadius;
 let selectedGrowthType = GROWTH.von_neumann;
 let selectedBorderType = EDGE_CASE.absorb;
 let played = true;
 let showEnergy = false;
+let showDensity = false;
 
 window.onload = generateBoard;
 document.getElementById("width").onchange = generateBoard;
 document.getElementById("height").onchange = generateBoard;
 document.getElementById("next").onclick = next;
 document.getElementById("mc").onclick = mc;
+document.getElementById("dislocation").onclick = getDislocation;
+document.getElementById("showDislocation").onclick = function() {
+  showDensity = !showDensity;
+  paint();
+};
+
 document.getElementById("mcPlay").onclick = function() {
   iterations = 0;
   playEnergy();
